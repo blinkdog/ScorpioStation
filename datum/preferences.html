@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+    <meta charset="utf-8" />
+    
+    <base href="../" />
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="extra.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <title>&#x2F;datum&#x2F;preferences - Paradise Code Docs</title>
+    
+</head>
+
+<body>
+    <nav>
+        <div class="nav-wrapper blue">
+            <a href="index.html" class="brand-logo">&nbsp;Paradise Code Docs</a>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+                
+                <li><a href="index.html#modules">Modules</a></li>
+                <li><a href="index.html#types">Types</a></li>
+                
+            </ul>
+        </div>
+    </nav>
+    <main class="container">
+<h1>preferences <aside>/<a href="datum.html">datum</a>/<a href="datum/preferences.html">preferences</a></aside>
+        
+    
+            <a href="https://github.com/blinkdog/ScorpioStation/blob/0528f2775fcb012dfb44b50b66db50226f87b4d6/code/modules/client/preference/preferences.dm#L69">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;client&#x2F;preference&#x2F;preferences.dm 69"/></a></h1>
+
+<table class="summary" cellspacing="0"><tr><td colspan="2"><h2>Procs</h2><a href="datum/preferences.html#proc">Jump To Proc Details</a></td></tr>
+            <tr><th><a href="datum/preferences.html#proc/clear_character_slot">clear_character_slot</a></th><td>Delete a character from a slot in the database.</td></tr>
+            <tr><th><a href="datum/preferences.html#proc/load_character">load_character</a></th><td>Load the specified character slot from the database.</td></tr>
+            <tr><th><a href="datum/preferences.html#proc/load_preferences">load_preferences</a></th><td>Load the player's server wide preferences from the database.</td></tr>
+            <tr><th><a href="datum/preferences.html#proc/load_pseudo_preferences">load_pseudo_preferences</a></th><td>Read things from table player that we don't save (but others do).</td></tr>
+            <tr><th><a href="datum/preferences.html#proc/load_random_character_slot">load_random_character_slot</a></th><td>Load a character from a random valid slot.</td></tr>
+            <tr><th><a href="datum/preferences.html#proc/save_character">save_character</a></th><td>Save the player's current character to the database.</td></tr>
+            <tr><th><a href="datum/preferences.html#proc/save_preferences">save_preferences</a></th><td>Save the player's server wide preferences to the database.</td></tr></table><h2 id="proc">Proc Details</h2><h5 id="proc/clear_character_slot"><aside class="declaration">proc </aside>clear_character_slot<aside>(/<a href="client.html">client</a>/C) 
+        
+    
+            <a href="https://github.com/blinkdog/ScorpioStation/blob/0528f2775fcb012dfb44b50b66db50226f87b4d6/code/modules/client/preference/preferences_scorpio.dm#L108">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;client&#x2F;preference&#x2F;preferences_scorpio.dm 108"/></a></aside>
+        </h5>
+        <p>Delete a character from a slot in the database.</p>
+<p>Removes the character in the default_slot from the database. This proc
+removes all of the character attributes tied to the character record.
+It then removes the character record from the database. The flag saved
+is updated to indicate the character attributes in the preferences datum
+no longer correspond to a saved record in the database.</p>
+<p>Arguments:</p>
+<ul>
+<li>C - client object for which to delete the default_slot character</li>
+</ul>
+<p>Returns:</p>
+<ul>
+<li>TRUE - If the character slot was removed from the database</li>
+<li>FALSE - If some error prevented the character slot from being deleted</li>
+</ul><h5 id="proc/load_character"><aside class="declaration">proc </aside>load_character<aside>(/<a href="client.html">client</a>/C, slot) 
+        
+    
+            <a href="https://github.com/blinkdog/ScorpioStation/blob/0528f2775fcb012dfb44b50b66db50226f87b4d6/code/modules/client/preference/preferences_scorpio.dm#L181">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;client&#x2F;preference&#x2F;preferences_scorpio.dm 181"/></a></aside>
+        </h5>
+        <p>Load the specified character slot from the database.</p>
+<p>Loads the specified character slot from the database into the character
+attribute vars of the preferences datum. The slot may be any valid slot
+and will default to default_slot if not specified. While loading the
+character, the default_slot is updated to the slot provided to this
+function; if you load Slot 5, you are now 'using' Slot 5.</p>
+<p>Character attributes are loaded on a best-effort basis. Whatever is in
+the database is checked against having a variable to put it into, and
+a sanitization function to call. If either of these are lacking, the
+value is simply skipped. We only process the values provided by the
+database, and make no attempt to find &quot;missing&quot; values from the canonical
+list of character attributes.</p>
+<p>Arguments:</p>
+<ul>
+<li>C - client object for which to load a character</li>
+<li>slot - the character slot to load (uses default_slot if not specified)</li>
+</ul>
+<p>Returns:</p>
+<ul>
+<li>TRUE - If the character was successfully loaded from the database</li>
+<li>FALSE - If some error prevented the character from being loaded</li>
+</ul><h5 id="proc/load_preferences"><aside class="declaration">proc </aside>load_preferences<aside>(/<a href="client.html">client</a>/C) 
+        
+    
+            <a href="https://github.com/blinkdog/ScorpioStation/blob/0528f2775fcb012dfb44b50b66db50226f87b4d6/code/modules/client/preference/preferences_scorpio.dm#L293">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;client&#x2F;preference&#x2F;preferences_scorpio.dm 293"/></a></aside>
+        </h5>
+        <p>Load the player's server wide preferences from the database.</p>
+<p>load_preferences populates the vars listed in saved_preferences by querying
+the database for their values.</p>
+<p>Player preferences are loaded on a best-effort basis. Whatever is in
+the database is checked against having a variable to put it into, and
+a sanitization function to call. If either of these are lacking, the
+value is simply skipped. We only process the values provided by the
+database, and make no attempt to find &quot;missing&quot; values from the canonical
+list of player preferences.</p>
+<p>Arguments:</p>
+<ul>
+<li>C - client object for which to load preferences</li>
+</ul>
+<p>Returns:</p>
+<ul>
+<li>TRUE - If saved preferences were loaded without error</li>
+<li>FALSE - If some error prevented saved preferences from loading</li>
+</ul><h5 id="proc/load_pseudo_preferences"><aside class="declaration">proc </aside>load_pseudo_preferences<aside>(/<a href="client.html">client</a>/C) 
+        
+    
+            <a href="https://github.com/blinkdog/ScorpioStation/blob/0528f2775fcb012dfb44b50b66db50226f87b4d6/code/modules/client/preference/preferences_scorpio.dm#L366">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;client&#x2F;preference&#x2F;preferences_scorpio.dm 366"/></a></aside>
+        </h5>
+        <p>Read things from table player that we don't save (but others do).</p>
+<p>load_pseudo_preferences loads values from table player and populates them
+into the preferences datum. These are pseudo preferences because the values
+come from table player, not table player_preferences. They are also pseudo
+preferences because our code does not save them back to the database.</p>
+<p>The login code relied on load_preferences to populate some values when a
+client would log in to play the game. load_pseudo_preferences is the
+replacement for that populate-on-login functionality.</p>
+<p>Arguments:</p>
+<ul>
+<li>C - client object for which to load pseudo preferences</li>
+</ul>
+<p>Returns:</p>
+<ul>
+<li>TRUE - If pseudo preferences were loaded without error</li>
+<li>FALSE - If some error prevented pseudo preferences from loading</li>
+</ul><h5 id="proc/load_random_character_slot"><aside class="declaration">proc </aside>load_random_character_slot<aside>(/<a href="client.html">client</a>/C) 
+        
+    
+            <a href="https://github.com/blinkdog/ScorpioStation/blob/0528f2775fcb012dfb44b50b66db50226f87b4d6/code/modules/client/preference/preferences_scorpio.dm#L416">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;client&#x2F;preference&#x2F;preferences_scorpio.dm 416"/></a></aside>
+        </h5>
+        <p>Load a character from a random valid slot.</p>
+<p>load_random_character_slot does what it says on the tin; it calls the
+load_character function for a random character slot. The slots are first
+loaded from the database, and a random slot is chosen for loading.</p>
+<p>If there are no valid character slots in the database, this will call
+load_character with the default slot and end up generating a new unsaved
+character in the preferences datum.</p>
+<p>Arguments:</p>
+<ul>
+<li>C - client object for which to load a random character</li>
+</ul>
+<p>Returns:</p>
+<ul>
+<li>TRUE - If the character was loaded successfully from the database</li>
+<li>FALSE - If some error prevented the character from being loaded</li>
+</ul><h5 id="proc/save_character"><aside class="declaration">proc </aside>save_character<aside>(/<a href="client.html">client</a>/C) 
+        
+    
+            <a href="https://github.com/blinkdog/ScorpioStation/blob/0528f2775fcb012dfb44b50b66db50226f87b4d6/code/modules/client/preference/preferences_scorpio.dm#L459">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;client&#x2F;preference&#x2F;preferences_scorpio.dm 459"/></a></aside>
+        </h5>
+        <p>Save the player's current character to the database.</p>
+<p>save_character attempts to save all the vars listed in
+saved_character_attributes by querying the database to store their values.</p>
+<p>Arguments:</p>
+<ul>
+<li>C - client object for which to save the character</li>
+</ul>
+<p>Returns:</p>
+<ul>
+<li>TRUE - If the character was saved successfully from the database</li>
+<li>FALSE - If some error prevented the character from being saved</li>
+</ul><h5 id="proc/save_preferences"><aside class="declaration">proc </aside>save_preferences<aside>(/<a href="client.html">client</a>/C) 
+        
+    
+            <a href="https://github.com/blinkdog/ScorpioStation/blob/0528f2775fcb012dfb44b50b66db50226f87b4d6/code/modules/client/preference/preferences_scorpio.dm#L558">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;client&#x2F;preference&#x2F;preferences_scorpio.dm 558"/></a></aside>
+        </h5>
+        <p>Save the player's server wide preferences to the database.</p>
+<p>save_preferences attempts to save all the vars listed in saved_preferences
+by querying the database to store their values.</p>
+<p>Arguments:</p>
+<ul>
+<li>C - client object for which to save preferences</li>
+</ul>
+<p>Returns:</p>
+<ul>
+<li>TRUE - If saved preferences were saved without error</li>
+<li>FALSE - If some error prevented some saved preferences from saving</li>
+</ul></main>
+    <footer class="page-footer transparent">
+        <div class="footer-copyright blue">
+            <div class="container">
+                
+                paradise.dme at commit
+                <a class="white-text" href="https://github.com/blinkdog/ScorpioStation/tree/0528f2775fcb012dfb44b50b66db50226f87b4d6">0528f27</a>
+                on branch master &mdash; <a class="white-text" href="https://github.com/SpaceManiac/SpacemanDMM/blob/master/src/dmdoc/README.md">dmdoc 1.2.1</a>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>
